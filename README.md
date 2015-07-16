@@ -9,7 +9,7 @@ print{1, 2, 3}
 
 I have used this elegant feature to build libraries such as [luaclass](https://github.com/benglard/luaclass) and [luaimport](https://github.com/benglard/luaimport).
 
-htmlua takes advantage of this syntactic sugar to build a pure-lua HMTL templating engine. This project will likely soon be integrated into [waffle](https://github.com/benglard/waffle).
+htmlua takes advantage of this syntactic sugar to build a pure-lua HMTL templating engine. This project is now integrated into [waffle](https://github.com/benglard/waffle).
 
 ## Example Usage
 
