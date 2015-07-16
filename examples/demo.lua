@@ -47,8 +47,8 @@ print(
          end),
          ul(map(names, li)),
          ul(
-            loop{1, 2, 3, 'test'}(function(item)
-               return li(item)
+            loop{1, 2, 3, 'test', key=5}(function(k, v)
+               return li(v)
             end)
          ),
 

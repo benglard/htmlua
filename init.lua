@@ -98,8 +98,8 @@ end
 function loop(t)
    return function(f)
       local rv = {}
-      for _, val in pairs(t) do
-         table.insert(rv, f(val))
+      for key, value in pairs(t) do
+         table.insert(rv, f(key, value))
       end
       return rv
    end

@@ -73,20 +73,24 @@ local names = {'lua', 'python', 'javascript'}
 ul(map(names, li))
 ```
 
+Both render as:
+
+```html
+<ul><li>lua</li><li>python</li><li>javascript</li></ul>
+```
+
 Option 3
 
 ```lua
 ul(
-   loop{1, 2, 3, 'test'}(function(item)
-      return li(item)
+   loop{1, 2, 3, 'test', key=5}(function(k, v)
+      return li(v)
    end)
 )
 ```
 
-All options output:
-
 ```html
-<ul><li>lua</li><li>python</li><li>javascript</li></ul>
+<ul><li>1</li><li>2</li><li>3</li><li>test</li><li>5</li></ul>
 ```
 
 ## Comments
