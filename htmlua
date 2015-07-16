@@ -1,0 +1,33 @@
+#!/usr/bin/env luajit
+require 'torch' -- sorry, but this requires torch
+require 'htmlua'
+
+local cmd = torch.CmdLine()
+cmd:option('-f', '', 'lua source')
+cmd:option('--file', '', 'lua source')
+cmd:option('-o', '', 'outfile path')
+cmd:option('--out', '', 'outfile path')
+cmd:option('-v', false, 'be verbose')
+cmd:option('--verbose', false, 'be verbose')
+local opt = cmd:parse(arg or {})
+
+local infile = opt.f or opt.file
+local outfile = opt.o or opt.out
+local verbose = opt.v or opt.verbose
+
+if #infile > 0 then
+   local html = dofile(infile)
+   if verbose then
+      print(string.format('Found %s. HTML compilation done.', infile))
+      print(html)
+   end
+
+   if #outfile > 0 then
+      file = io.open(outfile, 'w')
+      file:write(html)
+      file:close()
+      if verbose then
+         print(string.format('Saved to: %s', outfile))
+      end
+   end
+end
