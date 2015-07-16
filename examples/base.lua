@@ -1,10 +1,10 @@
-return html {
-   head {
-      title 'Base'
+return h.html {
+   h.head {
+      h.title 'Base'
    },
-   body {
+   h.body {
       defblock 'content',
       defblock 'content2',
-      p 'base'
+      h.p 'base'
    }
 }

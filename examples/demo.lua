@@ -1,54 +1,54 @@
-require '..'
+local h = require '..'
 
 local x = 5
 local names = {'lua', 'python', 'javascript'}
 
 print(
    doctype 'html' ..
-   html {
+   h.html {
       lang="en",
-      head {
-         link { href="" },
-         script { type="text/javascript", src="" },
+      h.head {
+         h.link { href="" },
+         h.script { type="text/javascript", src="" },
       },
-      body {
-         h1 "HELLO",
-         div {
-            p "Hey",
-            img {
+      h.body {
+         h.h1 "HELLO",
+         h.div {
+            h.p "Hey",
+            h.img {
                src="",
                width="100",
                height="100"
             },
-            br, br, nbsp, copy,
-            p {
+            h.br, h.br, h.nbsp, h.copy,
+            h.p {
                id="words",
                class="words",
                "blah blah blah"  
             },
-            h6 "yo"
+            h.h6 "yo"
          },
 
-         script {
+         h.script {
             type="text/javascript",
             [[(function() {
                var i = 10;
                console.log(i);
             })();]]
          },
-         script [[console.log('yo');]],
+         h.script [[console.log('yo');]],
          
          render(function()
             local rv = ''
             for _, name in pairs(names) do
-               rv = rv .. li(name)
+               rv = rv .. h.li(name)
             end
-            return ul(rv)
+            return h.ul(rv)
          end),
-         ul(map(names, li)),
-         ul(
+         h.ul(map(names, h.li)),
+         h.ul(
             loop{1, 2, 3, 'test', key=5}(function(k, v)
-               return li(v)
+               return h.li(v)
             end)
          ),
 
@@ -58,32 +58,32 @@ print(
             too
          ]]
 
-         p[[LONG,
+         h.p[[LONG,
             LONG,
             LONG,
             STRING]],
-         p(x),
-         p(true),
-         p{1, 2, 3, true},
-         p '${name} is cool' % {name='htmlua'},
-         div '<p>yo</p>',
+         h.p(x),
+         h.p(true),
+         h.p{1, 2, 3, true},
+         h.p '${name} is cool' % {name='htmlua'},
+         h.div '<p>yo</p>',
          
          comment "test comment",
          comment {
-            p "p",
-            div {
-               h3 "h3"
+            h.p "p",
+            h.div {
+               h.h3 "h3"
             }
          },
 
          IF {
             x == 5,
-            THEN(p "x == 5"),
-            ELSE(function() return p "x ~= 5" end)
+            THEN(h.p "x == 5"),
+            ELSE(function() return h.p "x ~= 5" end)
          },
 
-         div {
-            span "hello", lt, nbsp, gt, span "hello2"
+         h.div {
+            h.span "hello", h.lt, h.nbsp, h.gt, h.span "hello2"
          }
       }
    }

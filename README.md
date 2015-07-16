@@ -9,21 +9,20 @@ print{1, 2, 3}
 
 I have used this elegant feature to build libraries such as [luaclass](https://github.com/benglard/luaclass) and [luaimport](https://github.com/benglard/luaimport).
 
-htmlua takes advantage of this syntactic sugar to build a pure-lua HMTL templating engine. This project will likely soon be integrated into [waffle](https://github.com/benglard/waffle). Note that all of the examples below first require 'htmlua'.
+htmlua takes advantage of this syntactic sugar to build a pure-lua HMTL templating engine. This project will likely soon be integrated into [waffle](https://github.com/benglard/waffle).
 
 ## Example Usage
 
 ```lua
-return html {
-   head {
-      title "Title"
+local html = require 'htmlua'
+return html.html {
+   html.head {
+      html.title "Title"
    },
-   body {
-      p "yo",
-      img {
-         src="https://www.google.com/images/srpr/logo11w.png",
-         width="100",
-         height="100"
+   html.body {
+      html.p "yo",
+      html.img {
+         src="https://www.google.com/images/srpr/logo11w.png"
       }
    }
 }
@@ -43,8 +42,8 @@ Amazingly, there is no compiler, no 3rd-party language, that's pure lua! That me
 local x = 5
 IF {
    x == 5,
-   THEN(p "x == 5"),
-   ELSE(p "x ~= 5")
+   THEN(h.p "x == 5"),
+   ELSE(h.p "x ~= 5")
 }
 ```
 
@@ -60,9 +59,9 @@ Option 1
 render(function()
    local rv = ''
    for _, name in pairs(names) do
-      rv = rv .. li(name)
+      rv = rv .. h.li(name)
    end
-   return ul(rv)
+   return h.ul(rv)
 end)
 ```
 
@@ -70,7 +69,7 @@ Option 2
 
 ```lua
 local names = {'lua', 'python', 'javascript'}
-ul(map(names, li))
+h.ul(map(names, h.li))
 ```
 
 Both render as:
@@ -82,9 +81,9 @@ Both render as:
 Option 3
 
 ```lua
-ul(
+h.ul(
    loop{1, 2, 3, 'test', key=5}(function(k, v)
-      return li(v)
+      return h.li(v)
    end)
 )
 ```
@@ -98,9 +97,9 @@ ul(
 ```lua
 comment "test comment",
 comment {
-   p "p",
-   div {
-      h3 "h3"
+   h.p "p",
+   h.div {
+      h.h3 "h3"
    }
 }
 ```
@@ -117,26 +116,26 @@ Blocks allow for template inheritance
 
 ```lua
 -- base.html
-return html {
-   head {
-      title 'Base'
+return h.html {
+   h.head {
+      h.title 'Base'
    },
-   body {
+   h.body {
       defblock 'content',
       defblock 'content2',
-      p 'base'
+      h.p 'base'
    }
 }
 ```
 
 ```lua
 -- ext.lua
-require 'htmlua'
+h = require 'htmlua'
 base = extends 'examples/base.lua'
-base = block(base, 'content')(h1 'content')
+base = block(base, 'content')(h.h1 'content')
 base = block(base, 'content2'){
-   div {
-      p 'content2'
+   h.div {
+      h.p 'content2'
    }
 }
 ```
@@ -150,13 +149,23 @@ base = block(base, 'content2'){
 HTML entities display reserved characters in HTML, e.g. the non-breaking space, less than, greather than, etc.
 
 ```lua
-div {
-   span "hello", lt, nbsp, gt, span "hello2"
+h.div {
+   h.span "hello", h.lt, h.nbsp, h.gt, h.span "hello2"
 }
 ```
 
 ```html
 <div><span>hello</span>&lt;&nbsp;&gt;<span>hello2</span></div>
+```
+
+## String Interpolation
+
+```lua
+h.p '${name} is cool' % {name='htmlua'}
+```
+
+```html
+<p>htmlua is cool</p>
 ```
 
 ## htmlua (executable)

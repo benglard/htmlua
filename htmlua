@@ -1,6 +1,6 @@
 #!/usr/bin/env luajit
 require 'torch' -- sorry, but this requires torch
-require 'htmlua'
+html = require 'htmlua'
 
 local cmd = torch.CmdLine()
 cmd:option('-f', '', 'lua source')
@@ -16,15 +16,15 @@ local outfile = opt.o or opt.out
 local verbose = opt.v or opt.verbose
 
 if #infile > 0 then
-   local html = dofile(infile)
+   local out = dofile(infile)
    if verbose then
       print(string.format('Found %s. HTML compilation done.', infile))
-      print(html)
+      print(out)
    end
 
    if #outfile > 0 then
       file = io.open(outfile, 'w')
-      file:write(html)
+      file:write(out)
       file:close()
       if verbose then
          print(string.format('Saved to: %s', outfile))

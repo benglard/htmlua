@@ -1,12 +1,18 @@
 -- Base library
+local html = {}
 
 local tags = {
-   'html', 'head', 'body', 'link', 'script', 'p', 'b', 'i',
-   'strong', 'video', 'audio', 'img', 'div', 'a', 'li', 'ul',
-   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'title', 'meta', 'style',
-   'span'
+   'a', 'abbr', 'acronym', 'address', 'area', 'b', 'base', 'bdo', 'big',
+   'blockquote', 'body', 'br', 'button', 'caption', 'cite', 'code', 'col',
+   'colgroup', 'dd', 'del', 'dfn', 'div', 'dl', 'DOCTYPE', 'dt', 'em',
+   'fieldset', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'head',
+   'html', 'hr', 'i', 'img', 'input', 'ins', 'kbd', 'label', 'legend',
+   'li', 'link', 'map', 'meta', 'noscript', 'object', 'ol', 'optgroup',
+   'option', 'p', 'param', 'pre', 'q', 'samp', 'script', 'select',
+   'small', 'span', 'strong', 'style', 'sub', 'sup', 'table', 'tbody',
+   'td', 'textarea', 'tfoot', 'th', 'thead', 'title', 'tr', 'tt', 'ul', 'var'
 }
-local only1tags = { img = true }
+local only1tags = { img = true, meta = true, link = true, input = true }
 local entities = {
    'nbsp', 'lt', 'gt', 'amp', 'cent', 'pound', 'yen', 'euro',
    'copy', 'reg'
@@ -63,14 +69,14 @@ local function maketag(tag, options, endtag, comment)
 end
 
 for _, tag in pairs(tags) do
-   _G[tag] = function(inner)
+   html[tag] = function(inner)
       return maketag(tag, inner)
    end
 end
 for _, entity in pairs(entities) do
-   _G[entity] = '&' .. entity .. ';'
+   html[entity] = '&' .. entity .. ';'
 end
-_G['br'] = '<br>'
+html['br'] = '<br>'
 
 function comment(inner)
    return maketag('!--', inner, '--', true)
@@ -172,3 +178,5 @@ getmetatable('').__mod = function(str, tab)
    -- ex: print('${name} is ${value}' % {name='foo', value='bar'})
    return (str:gsub('($%b{})', function(w) return tab[w:sub(3, -2)] or w end))
 end
+
+return html
