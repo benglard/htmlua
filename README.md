@@ -56,7 +56,7 @@ IF {
 Option 1
 
 ```lua
-render(function()
+DO(function()
    local rv = ''
    for _, name in pairs(names) do
       rv = rv .. h.li(name)
@@ -166,6 +166,53 @@ h.p '${name} is cool' % {name='htmlua'}
 
 ```html
 <p>htmlua is cool</p>
+```
+
+## Async Rendering (with a larger example)
+
+```lua
+-- basetemp.lua
+return h.html {
+   h.head {
+      h.title 'Base'
+   },
+   h.body {
+      defblock 'content',
+      h.p '${msg}'
+   }
+}
+```
+
+```lua
+-- midtemp.lua
+local base = extends 'examples/basetemp.lua'
+return block(base, 'content'){
+   h.ul(each([[${users}]], h.li)),
+   defblock 'content2'
+}
+```
+
+```lua
+-- temp.lua
+local base = extends 'examples/midtemp.lua'
+return block(base, 'content2'){
+   h.div {
+      h.p {
+         h.b 'Time: ',
+         h.i '${time}'
+      }
+   }
+}
+```
+
+```lua
+local args = {
+   msg = 'Hello World',
+   users = {'lua', 'python', 'javascript'},
+   time = os.time()
+}
+
+render('examples/temp.lua', args, print)
 ```
 
 ## htmlua (executable)

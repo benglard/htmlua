@@ -1,3 +1,5 @@
+local async = require 'async'
+
 -- Base library
 local html = {}
 
@@ -86,12 +88,12 @@ function doctype(inner)
    return string.format('<!DOCTYPE %s>', inner)
 end
 
-function render(f)
-   assert(type(f) == 'function', 'render requires input of type function')
-   return f()
-end
-
 -- Loops, conditionals
+
+function DO(f, ...)
+   assert(type(f) == 'function', 'render requires input of type function')
+   return f(...)
+end
 
 function each(t, f)
    if type(t) == 'string' then
@@ -176,7 +178,13 @@ end
 
 function extends(path)
    assert(type(path) == 'string', 'extends requires input of type string')
-   return dofile(path)
+   local rv = nil
+   async.fs.readFile(path,  function(content)
+      rv = loadstring(content % _G.renderargs)()
+   end)
+   async.go()
+   while rv == nil do end --blocking, need futures
+   return rv
 end
 
 -- Override string.__mod for easy variable rendering
@@ -185,6 +193,25 @@ getmetatable('').__mod = function(str, tab)
    -- http://lua-users.org/wiki/StringInterpolation
    -- ex: print('${name} is ${value}' % {name='foo', value='bar'})
    return (str:gsub('($%b{})', function(w) return tab[w:sub(3, -2)] or w end))
+end
+
+-- Async Rendering
+
+html.start = async.go
+
+function render(path, args, callback)
+   for key, val in pairs(args) do
+      if type(val) == 'table' then
+         args[key] = torch.serialize(val)
+      end
+   end
+   _G.renderargs = args
+
+   async.fs.readFile(path,  function(content)
+      callback(loadstring(content % args)())
+      _G.renderargs = nil
+   end)
+   async.go()
 end
 
 return html

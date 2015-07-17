@@ -38,7 +38,7 @@ print(
          },
          h.script [[console.log('yo');]],
          
-         render(function()
+         DO(function()
             local rv = ''
             for _, name in pairs(names) do
                rv = rv .. h.li(name)
