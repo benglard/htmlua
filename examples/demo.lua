@@ -45,7 +45,7 @@ print(
             end
             return h.ul(rv)
          end),
-         h.ul(map(names, h.li)),
+         h.ul(each(names, h.li)),
          h.ul(
             loop{1, 2, 3, 'test', key=5}(function(k, v)
                return h.li(v)

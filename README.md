@@ -69,7 +69,7 @@ Option 2
 
 ```lua
 local names = {'lua', 'python', 'javascript'}
-h.ul(map(names, h.li))
+h.ul(each(names, h.li))
 ```
 
 Both render as:
@@ -170,7 +170,7 @@ h.p '${name} is cool' % {name='htmlua'}
 
 ## htmlua (executable)
 
-The htmlua executable lets you compile and save lua source as html. Unfortunately, although htmlua the library does not, htmlua the executable requires [torch](https://github.com/torch/torch7). This dependency should eventually be removed.
+The htmlua executable lets you compile and save lua source as html.
 
 ```
 > htmlua -f examples/test.lua -o out.html

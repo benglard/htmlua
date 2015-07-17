@@ -15,7 +15,7 @@ you write HTML in a pure Lua DSL.
 }
 
 dependencies = {
-   'lua >= 5.1'
+   'torch >= 7.0'
 }
 
 build = {

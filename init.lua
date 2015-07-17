@@ -24,7 +24,7 @@ local function nopt(t)
    return n - #t
 end
 
-local function maketag(tag, options, endtag, comment)
+function maketag(tag, options, endtag, comment)
    if endtag == nil then
       endtag = string.format('</%s', tag)
    end
@@ -93,7 +93,11 @@ end
 
 -- Loops, conditionals
 
-function map(t, f)
+function each(t, f)
+   if type(t) == 'string' then
+      t = torch.deserialize(t)
+   end
+
    local rv = {}
    for _, val in pairs(t) do
       table.insert(rv, f(val))
@@ -102,6 +106,10 @@ function map(t, f)
 end
 
 function loop(t)
+   if type(t) == 'string' then
+      t = torch.deserialize(t)
+   end
+
    return function(f)
       local rv = {}
       for key, value in pairs(t) do
