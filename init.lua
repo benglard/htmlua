@@ -178,12 +178,10 @@ end
 
 function extends(path)
    assert(type(path) == 'string', 'extends requires input of type string')
-   local rv = nil
-   async.fs.readFile(path,  function(content)
-      rv = loadstring(content % _G.renderargs)()
-   end)
-   async.go()
-   while rv == nil do end --blocking, need futures
+   local fi = io.open(path)
+   local content = fi:read('*all')
+   local rv = loadstring(content % _G.renderargs)()
+   fi:close()
    return rv
 end
 
@@ -196,8 +194,6 @@ getmetatable('').__mod = function(str, tab)
 end
 
 -- Async Rendering
-
-html.start = async.go
 
 function render(path, args, callback)
    for key, val in pairs(args) do
