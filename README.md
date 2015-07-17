@@ -215,6 +215,10 @@ local args = {
 render('examples/temp.lua', args, print)
 ```
 
+```html
+<html><head><title>Base</title></head><body><ul><li>lua</li><li>python</li><li>javascript</li></ul><div><p><b>Time: </b><i>1437167130</i></p></div><p>Hello World</p></body></html>
+```
+
 ## htmlua (executable)
 
 The htmlua executable lets you compile and save lua source as html.
